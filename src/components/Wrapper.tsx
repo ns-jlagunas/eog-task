@@ -4,6 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   wrapper: {
     height: '100vh',
+    display: 'flex',
+    flexFlow: 'row-nowrap',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
