@@ -1,25 +1,25 @@
-import React from 'react';
-import createStore from './store';
-import { Provider } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import 'react-toastify/dist/ReactToastify.css';
-import Wrapper from './components/Wrapper';
-import Chart from './components/Chart';
-import SelectMetric from './components/SelectMetric';
+import React from "react";
+import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import createStore from "./store/index.ts";
+import "react-toastify/dist/ReactToastify.css";
+import Wrapper from "./components/Wrapper.tsx";
+import Chart from "./components/Chart";
+import SelectMetric from "./components/SelectMetric";
 
 const store = createStore();
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: 'rgb(39,49,66)',
+      main: "rgb(39,49,66)",
     },
     secondary: {
-      main: 'rgb(197,208,222)',
+      main: "rgb(197,208,222)",
     },
     background: {
-      default: 'rgb(226,231,238)',
+      default: "rgb(226,231,238)",
     },
   },
 });
@@ -43,7 +43,7 @@ const App = () => {
       <CssBaseline />
       <Provider store={store}>
         <Wrapper>
-          <SelectMetric onSelect={selectMetric}></SelectMetric>
+          <SelectMetric onSelect={selectMetric} />
           <Chart metrics={metrics} />
           <ToastContainer />
         </Wrapper>

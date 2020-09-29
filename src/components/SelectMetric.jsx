@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { actions } from '../Features/Metrics/reducer';
-import { Provider, createClient, useQuery } from 'urql';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Provider, createClient, useQuery } from "urql";
+import { makeStyles } from "@material-ui/core/styles";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import PropTypes from "prop-types";
+import { actions } from "../Features/Metrics/reducer.ts";
 
 const client = createClient({
-  url: 'https://react.eogresources.com/graphql',
+  url: "https://react.eogresources.com/graphql",
 });
 
 const query = `
@@ -18,9 +20,17 @@ const query = `
   }
 `;
 
+const useStyles = makeStyles({
+  metricWrapper: {
+    display: "flex",
+    flexFlow: "row nowrap",
+  },
+});
+
 const SelectMetric = props => {
   const { onSelect } = props;
   const dispatch = useDispatch();
+  const classes = useStyles();
   const [result] = useQuery({
     query,
   });
@@ -57,7 +67,7 @@ const SelectMetric = props => {
   };
 
   return (
-    <FormGroup>
+    <FormGroup className={classes.metricWrapper}>
       {checks.map(metric => (
         <FormControlLabel
           key={metric.name}
@@ -76,4 +86,8 @@ export default props => {
       <SelectMetric onSelect={onSelect} />
     </Provider>
   );
+};
+
+SelectMetric.propTypes = {
+  onSelect: PropTypes.func.isRequired,
 };

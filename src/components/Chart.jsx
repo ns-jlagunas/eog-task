@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../Features/Chart/reducer';
-import { Provider, createClient, useQuery, defaultExchanges, subscriptionExchange, useSubscription } from 'urql';
-import { SubscriptionClient } from 'subscriptions-transport-ws';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import LineChart from './LineChart';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { Provider, createClient, useQuery, defaultExchanges, subscriptionExchange, useSubscription } from "urql";
+import { SubscriptionClient } from "subscriptions-transport-ws";
+import { actions } from "../Features/Chart/reducer.ts";
+import LineChart from "./LineChart";
 
-const subscriptionClient = new SubscriptionClient('wss://react.eogresources.com/graphql', { reconnect: true });
+const subscriptionClient = new SubscriptionClient("wss://react.eogresources.com/graphql", { reconnect: true });
 
 const client = createClient({
-  url: 'https://react.eogresources.com/graphql',
+  url: "https://react.eogresources.com/graphql",
   exchanges: [
     ...defaultExchanges,
     subscriptionExchange({
@@ -61,13 +61,13 @@ export default props => {
   );
 };
 
-function moviePropsAreEqual(prevMovie, nextMovie) {
-  const prevValue = prevMovie.test.at;
-  const nextValue = nextMovie.test.at;
+function renderPropsAreNew(prevMovie, nextMovie) {
+  const prevValue = prevMovie.render.at;
+  const nextValue = nextMovie.render.at;
   return prevValue === nextValue;
 }
 
-const MemoLineChart = React.memo(LineChart, moviePropsAreEqual);
+const MemoLineChart = React.memo(LineChart, renderPropsAreNew);
 
 const handleSubscription = (messages = [], response) => {
   return [response.newMeasurement, ...messages];
@@ -91,7 +91,7 @@ const MetricChart = props => {
     handleSubscription,
   );
 
-  const { fetching, data, error } = result;
+  const { data, error } = result;
 
   useEffect(() => {
     if (error) {
@@ -108,8 +108,16 @@ const MetricChart = props => {
     dispatch(actions.pushNewMetricValue(subResult.data[0]));
   }, [dispatch, subResult]);
 
-  if (fetching) return <LinearProgress />;
   if (!subResult.data) return null;
 
-  return <MemoLineChart data={multipleMeasurements} test={subResult.data[0]} />;
+  return <MemoLineChart data={multipleMeasurements} render={subResult.data[0]} metrics={metrics} />;
+};
+
+MetricChart.propTypes = {
+  metrics: PropTypes.arrayOf(
+    PropTypes.shape({
+      after: PropTypes.number,
+      metricName: PropTypes.string,
+    }),
+  ).isRequired,
 };
