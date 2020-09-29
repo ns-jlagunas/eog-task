@@ -5,9 +5,13 @@ const useStyles = makeStyles({
   wrapper: {
     height: '100vh',
     display: 'flex',
-    flexFlow: 'row-nowrap',
+    flexFlow: 'column nowrap',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    padding: '0 15px',
+    '&>*:first-child': {
+      padding: '15px',
+    },
   },
 });
 
