@@ -26,5 +26,6 @@ module.exports = {
   rules: {
     quotes: ['error', 'double'],
     '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
+    'react/jsx-one-expression-per-line': 'off'
   },
 };
