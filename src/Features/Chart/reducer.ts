@@ -35,18 +35,18 @@ const slice = createSlice({
     apiErrorReceived: (state, action: PayloadAction<ApiErrorAction>) => state,
     pushNewMetricValue: (state, action: PayloadAction<Measurement>) => {
       if (action.payload && state.multipleMeasurements && state.multipleMeasurements.length) {
-        let diarrea = state.multipleMeasurements.filter(obj => {
+        let localMeasurements = state.multipleMeasurements.filter(obj => {
           if (obj.metric === action.payload.metric) {
             return true;
           }
           return false;
         })[0];
-        if (diarrea) {
-          diarrea.measurements.shift();
-          diarrea.measurements.push(action.payload);
+        if (localMeasurements) {
+          localMeasurements.measurements.shift();
+          localMeasurements.measurements.push(action.payload);
           const updatedState = state.multipleMeasurements.map(measurement => {
             if (measurement.metric === action.payload.metric) {
-              return diarrea;
+              return localMeasurements;
             }
             return measurement;
           });
